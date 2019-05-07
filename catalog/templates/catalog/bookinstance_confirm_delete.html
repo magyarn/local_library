@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Delete Book Instance</h1>
+
+<p>Are you sure you want to delete the book instance: {{ bookinstance }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+{% if perms.catalog.is_librarian %}
+<p><a href="{% url 'catalog:book-instance-update' pk=bookinstance.id %}">Cancel</a></p>
+{% endif %}
+{% endblock %}

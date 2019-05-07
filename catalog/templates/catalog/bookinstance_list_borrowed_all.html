@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Borrowed Books</h1>
+
+{% if bookinstance_list %}
+<ul>
+
+  {% for bookinst in bookinstance_list %}
+  <li>
+    <p>Title: <a href="{% url 'catalog:book-detail' pk=bookinst.book.pk %}">{{bookinst.book.title}}</a></p>
+    <p class="{% if bookinst.is_overdue %}text-danger{% endif %}">Due: {{ bookinst.due_back }}</p>
+    <p>Borrower: {{ bookinst.borrower }}</p>
+    {% if perms.catalog.can_renew %}<p><a href="{% url 'catalog:renew-book-librarian' pk=bookinst.id %}">Renew</a></p>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+
+{% else %}
+<p>There are no books borrowed.</p>
+{% endif %}
+{% endblock %}

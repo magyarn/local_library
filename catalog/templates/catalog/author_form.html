@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if form.instance.pk %}
+<h1>Edit Author: {{ form.instance.first_name }} {{ form.instance.last_name }}</h1>
+{% else %}
+<h1>New Author</h1>
+{% endif %}
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  {% if form.instance.pk %}
+  <input type="submit" value="Update">
+  {% else %}
+  <input type="submit" value="Submit">
+  {% endif %}
+</form>
+{% if form.instance.pk and perms.catalog.is_librarian %}
+<p><a href="{% url 'catalog:author-delete' pk=form.instance.pk %}">Delete</a></p>
+{% endif %}
+
+{% endblock %}
