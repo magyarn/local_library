@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
+    'sass_processor',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,17 @@ STATIC_URL = '/static/'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+)
+
+SASS_PROCESSOR_INCLUDE_DIRS = (
+    os.path.join(STATIC_ROOT, 'scss'),
+    os.path.join(STATIC_ROOT, 'node_modules'),
+)
 
 LOGIN_REDIRECT_URL = '/'
 
