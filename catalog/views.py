@@ -29,6 +29,9 @@ def index(request):
 
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
+
+    # Queryset of newest books in the system
+    newest_books = Book.objects.all().order_by('-created_at')[:4]
     
     context = {
         'num_books': num_books,
@@ -37,6 +40,7 @@ def index(request):
         'num_authors': num_authors,
         'num_and': num_and,
         'num_visits': num_visits,
+        'newest_books': newest_books,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -48,10 +52,6 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
   model = Book
-
-class AuthorListView(generic.ListView):
-  model = Author
-  paginate_by = 3
 
 class AuthorDetailView(generic.DetailView):
   model = Author
@@ -178,3 +178,15 @@ class BookInstanceDeleteView(PermissionRequiredMixin, DeleteView):
     bookinstance = BookInstance.objects.filter(id=self.kwargs['pk'])[0]
     return reverse('catalog:book-detail', kwargs={ 'pk': bookinstance.book.pk })
     
+class ManageBooksView(PermissionRequiredMixin, generic.ListView):
+  permission_required = 'catalog.is_librarian'
+  model = Book
+  template_name = 'catalog/manage_books.html'
+  paginate_by = 5
+
+
+class ManageAuthorsView(PermissionRequiredMixin, generic.ListView):
+  permission_required = 'catalog.is_librarian'
+  model = Author
+  paginate_by = 3
+  template_name = 'catalog/manage_authors.html'

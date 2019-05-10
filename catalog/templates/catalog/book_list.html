@@ -1,22 +1,14 @@
 {% extends "../base.html" %}
 
 {% block content %}
-<h1>Book List</h1>
-{% if book_list %}
-<ul>
-  {% for book in book_list %}
-  <li>
-    <p><a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})</p>
-    {% if perms.catalog.is_librarian %}
-    <ul>
-      <li><a href="{% url 'catalog:book-update' pk=book.pk%}">Edit Book</a></li>
-      <li><a href="{% url 'catalog:author-update' pk=book.author.pk %}">Edit Author</a></li>
-    </ul>
-    {% endif %}
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>There are no books in the library.</p>
-{% endif %}
+<div class="container">
+  <h1>Books</h1>
+  {% if book_list %}
+    {% with book_list as books %}
+      {% include './includes/book_grid.html' %}
+    {% endwith %}
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+</div>
 {% endblock %}
