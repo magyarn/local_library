@@ -1,3 +1,13 @@
-p {
-  color: red;
+
+// Overrides
+.dropdown-menu.show {
+  left: -73px;
 }
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+@import './hero';
+@import './login-card';

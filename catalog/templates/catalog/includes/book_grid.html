@@ -1,0 +1,17 @@
+<ul class="card-deck">
+  {% for book in books %}
+  <li class="card m-1">
+    <a class="card-body" href="{{ book.get_absolute_url }}">
+      <h3 class="card-title">{{ book.title }}</h3>
+      <p class="card-subtitle">By: {{ book.author }}</p>
+      <p class="card-text">{{ book.summary|truncatechars:50 }}</p>
+      {% if perms.catalog.is_librarian %}
+      <ul>
+        <li><a href="{% url 'catalog:book-update' pk=book.pk%}">Edit Book</a></li>
+        <li><a href="{% url 'catalog:author-update' pk=book.author.pk %}">Edit Author</a></li>
+      </ul>
+      {% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
