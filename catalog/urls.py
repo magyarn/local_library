@@ -7,7 +7,6 @@ urlpatterns = [
   path('', views.index, name='index'),
   path('books/', views.BookListView.as_view(), name="book-list"),
   path('books/<int:pk>/', views.BookDetailView.as_view(), name="book-detail"),
-  path('authors/', views.AuthorListView.as_view(), name="author-list"),
   path('authors/<int:pk>/', views.AuthorDetailView.as_view(), name="author-detail"),
   path('my-books/', views.LoanedBooksByUserListView.as_view(), name='my-books'),
   path('borrowed/', views.AllLoanedBooksListView.as_view(), name='all-borrowed'),
@@ -30,4 +29,9 @@ urlpatterns += [
     path('book-instance/<int:pk>/create/', views.BookInstanceCreateView.as_view(), name='book-instance-create'),
     path('book-instance/<uuid:pk>/update/', views.BookInstanceUpdateView.as_view(), name='book-instance-update'),
     path('book-instance/<uuid:pk>/delete/', views.BookInstanceDeleteView.as_view(), name='book-instance-delete'),
+]
+
+urlpatterns += [
+    path('manage-books/', views.ManageBooksView.as_view(), name="manage-books"),
+    path('manage-authors/', views.ManageAuthorsView.as_view(), name="manage-authors"),
 ]

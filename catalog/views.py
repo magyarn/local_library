@@ -53,10 +53,6 @@ class BookListView(generic.ListView):
 class BookDetailView(generic.DetailView):
   model = Book
 
-class AuthorListView(generic.ListView):
-  model = Author
-  paginate_by = 3
-
 class AuthorDetailView(generic.DetailView):
   model = Author
 
@@ -182,3 +178,15 @@ class BookInstanceDeleteView(PermissionRequiredMixin, DeleteView):
     bookinstance = BookInstance.objects.filter(id=self.kwargs['pk'])[0]
     return reverse('catalog:book-detail', kwargs={ 'pk': bookinstance.book.pk })
     
+class ManageBooksView(PermissionRequiredMixin, generic.ListView):
+  permission_required = 'catalog.is_librarian'
+  model = Book
+  template_name = 'catalog/manage_books.html'
+  paginate_by = 5
+
+
+class ManageAuthorsView(PermissionRequiredMixin, generic.ListView):
+  permission_required = 'catalog.is_librarian'
+  model = Author
+  paginate_by = 3
+  template_name = 'catalog/manage_authors.html'

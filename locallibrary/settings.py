@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
     'sass_processor',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,8 @@ SASS_PROCESSOR_INCLUDE_DIRS = (
     os.path.join(STATIC_ROOT, 'scss'),
     os.path.join(STATIC_ROOT, 'node_modules'),
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = '/'
 

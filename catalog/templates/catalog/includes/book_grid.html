@@ -5,12 +5,13 @@
       <h3 class="card-title">{{ book.title }}</h3>
       <p class="card-subtitle">By: {{ book.author }}</p>
       <p class="card-text">{{ book.summary|truncatechars:50 }}</p>
-      {% if perms.catalog.is_librarian %}
-      <ul>
-        <li><a href="{% url 'catalog:book-update' pk=book.pk%}">Edit Book</a></li>
-        <li><a href="{% url 'catalog:author-update' pk=book.author.pk %}">Edit Author</a></li>
+      <ul class="tag-list">
+        {% for genre in book.genre.all %}
+        <li class="tag-list__item">
+          <button class="btn btn-outline-primary">{{ genre }}</button>
+        </li>
+        {% endfor %}
       </ul>
-      {% endif %}
     </a>
   </li>
   {% endfor %}

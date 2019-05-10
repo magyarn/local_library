@@ -44,4 +44,16 @@ ul {
     .login-card {
       width: 100%; } }
 
+.tag-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.tag-list__item {
+  margin: .5rem; }
+
 /*# sourceMappingURL=styles.css.map */
