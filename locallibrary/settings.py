@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
     'crispy_forms',
+    'pipeline',
 ]
 
 MIDDLEWARE = [
@@ -124,12 +125,33 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 
+PIPELINE = {
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'STYLESHEETS': {
+        'locallibrary': {
+            'source_filenames': (
+                'scss/styles.scss',
+            ),
+            'output_filename': 'css/styles.min.css',
+        },
+    },
+    'COMPILERS': (
+        'pipeline.compilers.sass.SASSCompiler',
+    )
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
