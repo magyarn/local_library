@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-import dj_database_url
+
 import django_heroku
 import os
 
@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['boiling-river-42384.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['boiling-river-42384.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -122,9 +122,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_URL = '/static/'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 STATICFILES_FINDERS = (
@@ -133,25 +134,21 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-# The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-STATIC_URL = '/static/'
-
 PIPELINE = {
-    'CSS_COMPRESSOR': 'pipeline.compressors.cssmin.CSSMinCompressor',
-    'JS_COMPRESSOR': 'pipeline.compressors.jsmin.JSMinCompressor',
+    'COMPILERS': (
+        'pipeline.compilers.sass.SASSCompiler',
+    ),
     'STYLESHEETS': {
         'locallibrary': {
             'source_filenames': (
                 'scss/styles.scss',
             ),
-            'output_filename': 'css/styles.min.css',
+            'output_filename': 'css/styles.css',
+            'extra_context': {
+                'media': 'screen,projection',
+            },
         },
     },
-    'COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    )
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -195,9 +192,7 @@ LOGGING = {
     }
 }
 
-# Heroku: Update database configuration from $DATABASE_URL.
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
-
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+
